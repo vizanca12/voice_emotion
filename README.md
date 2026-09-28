@@ -1,13 +1,3 @@
----
-title: Voice Emotion Recognition
-emoji: 🎙️
-colorFrom: indigo
-colorTo: red
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # Voice emotion recognition with CNNs
 
 Record a sentence in the browser, watch the mel spectrogram build in real time,
@@ -168,16 +158,11 @@ tests/             23 tests: split disjointness, feature shape, train/serve pari
 
 ## Deployment
 
-One image serves both hosts: it installs the CPU wheels and takes its port from
-`$PORT`, defaulting to 7860.
+The image installs the CPU wheels and takes its port from `$PORT`.
 
 ```bash
-# Google Cloud Run (current deployment)
 gcloud run deploy voice-emotion --source . --region europe-west9 \
     --allow-unauthenticated --port 8080 --memory 2Gi --cpu-boost
-
-# Hugging Face Spaces -- same repository, using the frontmatter above
-git push space main
 ```
 
 Cloud Run scales to zero, so the first request after an idle period waits ~20 s

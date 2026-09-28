@@ -3,7 +3,7 @@
 Audio arrives as raw float32 PCM already resampled to 16 kHz by the browser
 (Web Audio API). That keeps ffmpeg off the server entirely -- the deployed
 container would otherwise need it just to decode the WebM that MediaRecorder
-produces, and the free Hugging Face image has no system packages.
+produces, and the slim deployment image carries no system packages.
 """
 from __future__ import annotations
 
