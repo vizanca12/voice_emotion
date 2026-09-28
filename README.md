@@ -35,6 +35,11 @@ Trained on [RAVDESS](https://zenodo.org/records/1188976): 1440 clips, 24 actors,
 Chance on 8 classes is 12.5 %. For scale, a published CNN reporting 99.89 % on a
 two-speaker corpus was measuring speaker identity, not emotion.
 
+Under 5-fold speaker-grouped cross-validation — every actor held out exactly
+once — `scratch` scores **65.8 % ± 5.1 % UAR**, so the single-split number above
+is representative rather than a lucky draw. Details
+[below](#cross-validation-is-641--a-lucky-draw).
+
 ### The headline metric is UAR, not accuracy
 
 RAVDESS records neutral at one intensity and every other emotion at two, so
@@ -91,13 +96,31 @@ for a, b in ((0, 1), (0, 2), (1, 2)):
     assert not overlap, f"speaker leak between splits: actors {sorted(overlap)}"
 ```
 
-and `tests/test_pipeline.py` asserts that this guard fires. To check robustness
-across a different choice of held-out speakers, run 5-fold speaker-grouped
-cross-validation, where each of the 24 actors is unseen exactly once:
+and `tests/test_pipeline.py` asserts that this guard fires.
+
+### Cross-validation: is 64.1 % a lucky draw?
+
+A single held-out group of four actors is a small sample. To check that the
+result does not depend on *which* speakers were held out, `scratch` was
+retrained under 5-fold speaker-grouped cross-validation, where each of the 24
+actors is unseen exactly once:
 
 ```bash
 python -m src.train --model scratch --cv 5
 ```
+
+| Fold | 1 | 2 | 3 | 4 | 5 | |
+|---|---|---|---|---|---|---|
+| test actors | 1, 6, 11, 16, 21 | 2, 7, 12, 17, 22 | 3, 8, 13, 18, 23 | 4, 9, 14, 19, 24 | 5, 10, 15, 20 | |
+| UAR | 67.5 % | 73.8 % | 65.9 % | 58.1 % | 63.7 % | **65.8 % ± 5.1 %** |
+
+The fixed split's 64.1 % sits well inside one standard deviation of the mean,
+so it was not a fortunate choice of actors.
+
+The spread is worth reporting in its own right: **±5.1 points purely from which
+speakers are held out**, on a 24-speaker corpus. A paper quoting a single split
+to one decimal place is quoting precision it does not have, and two methods
+differing by three points on one split cannot be separated at all.
 
 ---
 
