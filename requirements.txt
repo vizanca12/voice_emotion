@@ -1,0 +1,12 @@
+# Local development / training (CUDA build installed separately -- see README).
+torch==2.5.1
+torchaudio==2.5.1
+torchvision==0.20.1
+numpy
+scikit-learn
+matplotlib
+soundfile
+tqdm
+fastapi
+uvicorn[standard]
+python-multipart

@@ -1,0 +1,9 @@
+# Runtime-only dependencies for the Hugging Face Space (CPU).
+# torch/torchaudio/torchvision are installed separately in the Dockerfile from
+# the CPU wheel index -- pulling them from PyPI would fetch the 2.5 GB CUDA
+# build, which does not fit a free Space.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+numpy<2.2
+soundfile==0.12.1

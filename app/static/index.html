@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice Emotion Recognition</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="tag">Speech emotion recognition &middot; CNN</div>
+    <h1>Can a machine hear how you feel?</h1>
+    <p>Record a sentence. Watch the spectrogram build in real time, then see what two
+       convolutional networks &mdash; one trained from scratch, one by transfer learning &mdash;
+       hear in your voice.</p>
+  </header>
+
+  <section class="panel">
+    <h2>Record</h2>
+    <div class="recorder">
+      <button id="recordBtn" class="record">Start recording</button>
+      <div class="timer" id="timer">0.0s</div>
+      <input type="file" id="fileInput" accept="audio/*" class="hidden">
+      <button id="uploadBtn" class="ghost">Upload a file instead</button>
+      <div class="hint" id="hint">Say something with feeling &mdash; about 3 seconds works best.</div>
+    </div>
+    <canvas id="live" width="1000" height="300"></canvas>
+    <div class="axis"><span>live spectrogram &middot; 0&ndash;8 kHz</span><span id="liveStatus">idle</span></div>
+    <div class="error hidden" id="error"></div>
+  </section>
+
+  <div class="grid hidden" id="results">
+
+    <section class="panel">
+      <h2>What the network actually sees</h2>
+      <canvas id="melCanvas" width="301" height="64"></canvas>
+      <div class="axis">
+        <span>0 s</span><span>64 mel bands &middot; 25 ms window &middot; 10 ms hop</span><span>3 s</span>
+      </div>
+      <canvas id="waveCanvas" width="1000" height="120"></canvas>
+      <div class="axis"><span>waveform envelope of the analysed window</span><span id="durLabel"></span></div>
+      <p class="note">This is the exact 64&times;301 log-mel image fed to both CNNs &mdash;
+         not a separate visualisation. The 3-second window is chosen as the most
+         energetic part of your recording, so leading silence is dropped.</p>
+    </section>
+
+    <section class="panel">
+      <h2>What each model hears</h2>
+      <div class="models" id="models"></div>
+    </section>
+
+  </div>
+
+  <section class="panel">
+    <h2>Models &amp; honest evaluation</h2>
+    <table class="metrics">
+      <thead>
+        <tr><th>Model</th><th>Architecture</th><th>UAR</th><th>Accuracy</th></tr>
+      </thead>
+      <tbody id="metricsBody">
+        <tr><td colspan="4" style="color:var(--muted)">loading&hellip;</td></tr>
+      </tbody>
+    </table>
+    <p class="note">
+      Scores are on <strong>RAVDESS actors the models never heard</strong> (actors 21&ndash;24
+      held out entirely; actors 17&ndash;20 used only to pick the stopping epoch).
+      The headline metric is <strong>UAR</strong> &mdash; unweighted average recall &mdash;
+      because RAVDESS contains half as many neutral clips as any other emotion,
+      so plain accuracy flatters a model that ignores the rare class.
+      Splitting clips at random instead of by speaker would let the network
+      recognise the actor rather than the emotion, and inflate every number here.
+    </p>
+  </section>
+
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>

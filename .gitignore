@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+
+# The corpus is 200 MB and redistributing it would breach the RAVDESS licence;
+# scripts/get_data.py fetches it from Zenodo instead.
+data/
+
+.DS_Store
+*.egg-info/
