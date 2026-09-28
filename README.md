@@ -14,7 +14,7 @@ Record a sentence in the browser, watch the mel spectrogram build in real time,
 and see what three convolutional networks hear in your voice.
 
 - **Live app:** https://voice-emotion-1019364994073.europe-west9.run.app
-- **Repository:** <!-- TODO: https://github.com/USER/voice-emotion-cnn -->
+- **Repository:** https://github.com/vizanca12/voice_emotion.git 
 
 Corpus: [RAVDESS](https://zenodo.org/records/1188976) — 1440 clips, 24 actors,
 8 emotions. Course assignment, *Apprentissage pour la robotique*, ENSTA Paris.
