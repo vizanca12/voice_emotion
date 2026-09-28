@@ -20,5 +20,9 @@ COPY --chown=user src/ ./src/
 COPY --chown=user app/ ./app/
 COPY --chown=user checkpoints/ ./checkpoints/
 
+# Hugging Face fixes the port at 7860; Cloud Run injects its own $PORT (8080)
+# and ignores EXPOSE. Defaulting to 7860 keeps one image working on both.
+# The shell form is required here -- the exec form does not expand variables.
+ENV PORT=7860
 EXPOSE 7860
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-7860}"]

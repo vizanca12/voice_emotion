@@ -280,6 +280,42 @@ function render(data) {
 
 let META = { models: [] };
 
+/* Cloud Run and other scale-to-zero hosts stop the container when idle, so the
+ * first request after a quiet period waits for a cold start. Poll /health until
+ * it answers and say so, rather than letting the page look broken. */
+async function waitForServer(timeoutMs = 90_000) {
+  const boot = el('boot');
+  const started = Date.now();
+  let shown = false;
+
+  while (Date.now() - started < timeoutMs) {
+    try {
+      const res = await fetch('/health', { cache: 'no-store' });
+      if (res.ok) {
+        boot.classList.add('hidden');
+        return true;
+      }
+    } catch {
+      /* container still starting; the fetch fails outright */
+    }
+    if (!shown && Date.now() - started > 1200) {
+      boot.classList.remove('hidden');     // only if it is actually slow
+      shown = true;
+    }
+    await new Promise((r) => setTimeout(r, 1500));
+  }
+
+  el('bootText').textContent =
+    'The server is not responding. It may be starting up — try reloading in a minute.';
+  return false;
+}
+
+async function boot() {
+  if (!(await waitForServer())) return;
+  await loadMeta();
+  recordBtn.disabled = false;
+}
+
 async function loadMeta() {
   try {
     META = await (await fetch('/api/meta')).json();
@@ -326,4 +362,4 @@ fileInput.addEventListener('change', async (e) => {
   }
 });
 
-loadMeta();
+boot();

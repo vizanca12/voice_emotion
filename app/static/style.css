@@ -114,5 +114,19 @@ table.metrics td.num { font-variant-numeric: tabular-nums; }
 .note { color: var(--muted); font-size: 13px; margin-top: 14px; }
 .note strong { color: var(--text); }
 
+/* Shown while a scale-to-zero host is starting the container. Without it the
+   first visitor stares at a dead page and assumes the demo is broken. */
+.boot {
+  display: flex; align-items: center; gap: 12px;
+  background: #1d1a2e; border: 1px solid #3a3357; border-radius: var(--radius);
+  padding: 14px 18px; margin-bottom: 20px; font-size: 14px; color: #cfc6ee;
+}
+.spinner {
+  flex: none; width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid #4a4270; border-top-color: var(--accent);
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
 .hidden { display: none !important; }
 .error { color: #ff8a7a; font-size: 14px; margin-top: 12px; }

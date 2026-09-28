@@ -1,0 +1,15 @@
+# `gcloud run deploy --source .` uploads this directory to Cloud Build, so
+# anything not needed inside the image must be excluded. Without this the
+# context is ~5.7 GB (the virtualenv alone is 4.9 GB) and the upload fails.
+.venv/
+data/
+notebooks/
+tests/
+.git/
+.github/
+__pycache__/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+requirements.txt
+README.md

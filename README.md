@@ -275,12 +275,26 @@ demo just quietly gets worse. That test makes the drift impossible.
 
 ## Deployment
 
-The repository is its own Hugging Face Space (Docker SDK). The Dockerfile
-installs the CPU wheels — the CUDA build is 2.5 GB and does not fit a free
-Space — and serves the same FastAPI app on port 7860.
+One image serves both targets. It installs the CPU wheels -- the CUDA build is
+2.5 GB -- and takes its port from `$PORT`, defaulting to 7860.
+
+**Google Cloud Run** (current deployment):
 
 ```bash
-git remote add space https://huggingface.co/spaces/<user>/voice-emotion-cnn
+gcloud run deploy voice-emotion --source .     --region europe-west9 --allow-unauthenticated     --port 8080 --memory 2Gi --cpu-boost
+```
+
+Cloud Run scales to zero, so the first request after an idle period pays a cold
+start of roughly twenty seconds while the container boots and loads the three
+checkpoints. The page polls `/health` and says it is waking the server rather
+than rendering a dead interface -- without that, a first-time visitor
+reasonably concludes the demo is broken.
+
+**Hugging Face Spaces** (Docker SDK) builds from the same repository, since the
+README carries the frontmatter it needs:
+
+```bash
+git remote add space https://huggingface.co/spaces/<user>/voice_emotion
 git push space main
 ```
 

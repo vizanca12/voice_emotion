@@ -17,10 +17,16 @@
        hear in your voice.</p>
   </header>
 
+  <div class="boot hidden" id="boot">
+    <span class="spinner"></span>
+    <span id="bootText">Waking the server &mdash; it sleeps when nobody is using it, so the
+      first visit takes about twenty seconds.</span>
+  </div>
+
   <section class="panel">
     <h2>Record</h2>
     <div class="recorder">
-      <button id="recordBtn" class="record">Start recording</button>
+      <button id="recordBtn" class="record" disabled>Start recording</button>
       <div class="timer" id="timer">0.0s</div>
       <input type="file" id="fileInput" accept="audio/*" class="hidden">
       <button id="uploadBtn" class="ghost">Upload a file instead</button>
