@@ -119,7 +119,7 @@ spectrogram shown after analysis is the exact tensor the CNNs received.
 ## Run it
 
 ```bash
-python -m venv .venv && .venv/Scripts/activate     # Linux/macOS: source .venv/bin/activate
+python -m venv .venv && .venv/Scripts/activate     
 pip install torch==2.5.1 torchaudio==2.5.1 torchvision==0.20.1 \
     --index-url https://download.pytorch.org/whl/cu121   # drop --index-url for CPU
 pip install -r requirements.txt
@@ -171,13 +171,13 @@ rather than rendering a dead interface.
 
 ## Who did what
 
-<!-- TODO: fill in before submitting -->
+
 
 | | Contribution |
 |---|---|
-| *name* | |
-| *name* | |
-| *name* | |
+| *João Victor Ferro Amorosini* |transfer_ft |
+| *Luiza Gonçalves Soares* |transfer |
+| *Vinicius Cesar Cavallaro Zancheta* | scratch|
 
 ## References
 
